@@ -3,9 +3,9 @@
     import apple from "$img/pomme.png";
     import wave from "$img/wave.svg";
     import logo from "$img/logoBig.svg";
-    import cart from "$img/cart.svg";
-    import map from "$img/map.svg";
-    import account from "$img/account.svg";
+    import search from "$img/search.svg";
+
+    import Nav from "$components/layouts/Nav.svelte";
 </script>
 
 <header>
@@ -21,13 +21,8 @@
     </div>
     <img class="flower" src={logo} alt="flower" />
     <img class="background" src={wave} alt="wave" />
-
 </header>
-<nav>
-    <img class="map" src={map} alt="map" />
-    <img class="account" src={account} alt="account" />
-    <img class="cart" src={cart} alt="cart" />
-</nav>
+<Nav></Nav>
 
 <style lang="scss">
     header {
@@ -97,17 +92,66 @@
         }
     }
 
-    nav {
-        width: 98%;
-        height: 3rem;
+    #location {
+        width: 100%;
+        height: 100vh;
         display: flex;
         align-items: center;
-        padding-right: 2rem;
-        justify-content: end;
-        gap: 2rem;
+        justify-content: space-evenly;
         position: absolute;
-        top: 100vh;
-        transform: translateY(-3rem);
+        top: 0;
+        right: -101%;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(13.5px);
+        #map {
+            width: 48%;
+            height: 90%;
+            border-radius: 0.5rem;
+            background: grey;
+        }
+        #right-side {
+            width: 48%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            border-radius: 0.5rem;
+            // background: yellow;
+            #search {
+                width: 70%;
+                height: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                align-self: center;
+                border-radius: 0.5rem;
+                background: $red;
+                .search__input {
+                    width: 100%;
+                    height: 100%;
+                    background: none;
+                    outline: none;
+                    border: none;
+                    color: $white;
+                }
+
+                .search__btn {
+                    height: 100%;
+                    background: none;
+                    border: none;
+                }
+            }
+
+            #farms {
+                width: 100%;
+                height: 93%;
+                border-radius: 0.5rem;
+                box-shadow:
+                    rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+                    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            }
+        }
     }
 
     @media screen and (max-width: 1150px) {
@@ -119,6 +163,19 @@
 
             .graphic {
                 width: 40%;
+            }
+        }
+    }
+
+    @media screen and (max-width: 890px) {
+        #location {
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 2rem;
+
+            #maps {
+                width: 70%;
+                height: 70%;
             }
         }
     }
