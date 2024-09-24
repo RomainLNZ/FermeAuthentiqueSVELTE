@@ -8,6 +8,7 @@ const config = {
 	preprocess: sveltePreprocess({
 		scss: {
 			prependData: "@import 'src/lib/scss/variables.scss'; @import 'src/lib/scss/main.scss';",
+			silenceDeprecations: ["legacy-js-api"],
 		},
 		typescript: true,
 	}),

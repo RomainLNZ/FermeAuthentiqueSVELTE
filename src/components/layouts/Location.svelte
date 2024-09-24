@@ -16,7 +16,7 @@
                 name="search"
             />
             <button class="search__btn" type="submit">
-                <img class="search" src= alt="search" />
+                <img class="search" alt="search" />
             </button>
         </form>
         <div id="farms"></div>

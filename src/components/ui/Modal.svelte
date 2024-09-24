@@ -1,37 +1,62 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import { fade, fly } from "svelte/transition";
+    import { fly, scale } from "svelte/transition";
     import CloseIcon from "~icons/heroicons/x-mark-16-solid";
 
     type Props = {
         content: Snippet;
         actions?: Snippet | false;
         onClose?: () =>void;
-        title: string;
-        form?: Boolean
+        title?: string | null;
+        form?: Boolean;
+        display?: Boolean;
     };
 
-    const { content, actions = false, onClose, title, form = false }: Props = $props();
+    const { content, actions = false, onClose, title = null, form = false, display=true }: Props = $props();
 
+    let open = $state(false);
+
+    $effect(() => {
+        if (display) {
+            setTimeout(() => open = true, 10);
+        }
+    });
+
+    const closeEffect = () => {
+        open = false;
+        setTimeout(() => {
+            if (onClose) {
+                onClose()
+            }
+        }, 500);
+    }
 </script>
 
-<svelte:element this={form ? 'form' : 'section'} transition:fade>
-    <button onclick={onClose}></button>
-    <div>
-        <button onclick={onClose}><CloseIcon /></button>
-        {#key title}
-            <h2 in:fly={{duration: 500, y: -20, delay: 500 }} out:fly={{duration: 500, y: -20 }}>{title}</h2>
-        {/key}
-        <div class="content">
-            {@render content()}
+{#if display}
+    <svelte:element this={form ? 'form' : 'section'}>
+        <button onclick={closeEffect}></button>
+        <div class:open>
+            <button onclick={closeEffect}><CloseIcon /></button>
+            {#if title}
+                {#key title}            
+                    <h2 in:fly={{duration: 500, y: -20, delay: 500 }} out:fly={{duration: 500, y: -20 }}>{title}</h2>
+                {/key}
+            {/if}
+            {#key title}
+                <div class="content" class:contentwa={actions} in:fly={{duration: 800, x: 50, delay: 300 }} out:fly={{duration: 800, x: -50 }}>
+                    {@render content()}
+                </div>
+            {/key}
+            {#if actions}
+                {#key title}
+                    <div class="actions" in:fly={{duration: 500, y: 20, delay: 500 }} out:fly={{duration: 500, y: 20 }}>
+                        {@render actions()}
+                    </div>
+                {/key}
+            {/if}
         </div>
-        {#if actions}
-            <div class="actions">
-                {@render actions()}
-            </div>
-        {/if}
-    </div>
-</svelte:element>
+    </svelte:element>
+{/if}
 
 <style lang="scss">
     section, form {
@@ -41,7 +66,6 @@
         top: 0;
         left: 0;
         overflow: hidden;
-
         > button {
             width: 100%;
             height: 100%;
@@ -56,15 +80,22 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             background: rgba(233, 238, 234, 0.4);
             border-radius: 16px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(12.8px);
-            -webkit-backdrop-filter: blur(12.8px);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            transition: .5s;
+
+            &.open {
+                transform: translate(-50%, -50%) scale(1) ;
+                opacity: 1;
+            }
 
             > button {
                 border: none;
@@ -91,23 +122,30 @@
 
             .content {
                 width: 100%;
-                flex: 1;
+                height: calc(100% - 4rem);
                 margin-top: 4rem;
-                position: relative;
+                position: absolute;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 gap: 2rem;
+                // overflow-x: hidden;
+                // overflow-y: scroll;
                 overflow-x: hidden;
-                overflow-y: scroll;
+
+                &wa {
+                    height: calc(100% - 8rem);
+                    margin-bottom: 4rem;
+                }
             }
 
             .actions {
                 width: calc(100% - 1rem);
                 min-height: 2rem;
-                position: relative;
-                padding-right: 1.5rem;
-                padding-bottom: 1.5rem;
+                position: absolute;
+                bottom: 1.5rem;
+                right: 1.5rem;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;

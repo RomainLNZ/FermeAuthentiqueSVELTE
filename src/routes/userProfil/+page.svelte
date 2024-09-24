@@ -1,22 +1,45 @@
 <script lang="ts">
     import headBg from "$img/background.svg";
     import apple from "$img/pomme.png";
+    import userProfil from "$img/UserProfil.png";
     import wave from "$img/wave.svg";
     import logo from "$img/logoBig.svg";
     import search from "$img/search.svg";
+    import StarIcon from "~icons/heroicons/star-solid";
+    import MarketIcon from "~icons/heroicons/building-storefront-20-solid";
 
     import Nav from "$components/layouts/Nav.svelte";
 </script>
 
 <header>
     <div class="content">
-        <h1>Ferme <br /><span>Authentique</span></h1>
+        <h1>Firstname <br /><span>Lastname</span></h1>
+        <p>firstname@gmail.com</p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <div class="action">
+            <button>
+                <MarketIcon />
+                <p>Market</p>
+            </button>
+            <button class="secondary">
+                <StarIcon />
+                <p>Favoris</p>
+            </button>
+        </div>
     </div>
 
     <div class="graphic">
         <div>
             <img class="bgimg" src={headBg} alt="apple background" />
-            <img class="img" src={apple} alt="apple background" />
+            <img class="img" src={userProfil} alt="user profil" />
         </div>
     </div>
     <img class="flower" src={logo} alt="flower" />
@@ -28,10 +51,8 @@
     header {
         width: 100%;
         height: 100vh;
-        height: 100dvh;
         position: relative;
         display: flex;
-        /* background: red; */
 
         .background {
             width: 100%;
@@ -41,10 +62,11 @@
         }
 
         .flower {
-            height: 65vh;
+            height: 25vh;
             position: absolute;
             bottom: 0;
             left: 0;
+            z-index: -1;
             transform: translateX(-20%);
             animation: wind 4s infinite ease-in-out;
         }
@@ -66,6 +88,7 @@
                 transform: translateX(-20%) rotate(0deg);
             }
         }
+
 
         .graphic {
             width: 60%;
@@ -100,6 +123,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 2rem;
             h1 {
                 font-size: 4rem;
                 color: $green;
@@ -107,6 +131,37 @@
                 span {
                     margin-left: 4rem;
                     color: $red;
+                }
+            }
+            p {
+                margin-left: 4rem;
+            }
+            .action {
+                width: 90%;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                button {
+                    width: 7rem;
+                    height: 7rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    border-radius: 1rem;
+                    border: none;
+                    color: $white;
+                    background: $green;
+                    font-size: 2.5rem;
+
+                    &.secondary {
+                        background: $red;
+                    }
+
+                    p {
+                        margin: 0%;
+                        font-size: 1rem;
+                    }
                 }
             }
         }
@@ -204,14 +259,23 @@
         header {
             flex-direction: column-reverse;
             justify-content: flex-end;
-            align-items: flex-start;
+            // align-items: flex-start;
 
             .flower {
-                height: 20vh;
+                height: 40vh;
+                top: 110px;
             }
 
             .content {
-                width: 100%;
+                margin-left: 4rem;
+                // width: 100%;
+                // p {
+                //     width: 30%;
+                // }
+            }
+
+            .action {
+                gap: 3rem;
             }
 
             .graphic {
@@ -235,6 +299,28 @@
         }
     }
 
+    @media screen and (max-width: 680px) {
+        .flower {
+            width: 20rem;
+            z-index: -1;
+        }
+
+        .action {
+            flex-direction: column;
+        }
+    }
+
+    @media screen and (max-width: 540px) {
+        header {
+            .flower {
+                width: 45%;
+                left: 21rem;
+                top: 65rem;
+                transform: scaleX(-1);
+            }
+        }
+    }
+
     @media screen and (max-width: 476px) {
         header .content h1 {
             font-size: 2.5rem;
@@ -245,6 +331,10 @@
         header {
             .graphic {
                 height: fit-content;
+            }
+
+            .content {
+                width: 70%;
             }
         }
     }
