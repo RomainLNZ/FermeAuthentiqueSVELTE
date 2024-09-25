@@ -3,16 +3,19 @@
     import { fly, scale } from "svelte/transition";
     import CloseIcon from "~icons/heroicons/x-mark-16-solid";
 
+    type asyncSubmit = Promise<{ global: string; } | undefined>;
+
     type Props = {
         content: Snippet;
         actions?: Snippet | false;
         onClose?: () =>void;
         title?: string | null;
         form?: Boolean;
+        onsubmit?: () => void | asyncSubmit | null;
         display?: Boolean;
     };
 
-    const { content, actions = false, onClose, title = null, form = false, display=true }: Props = $props();
+    const { content, actions = false, onClose, title = null, form = false, onsubmit, display=true }: Props = $props();
 
     let open = $state(false);
 
@@ -33,7 +36,7 @@
 </script>
 
 {#if display}
-    <svelte:element this={form ? 'form' : 'section'}>
+    <svelte:element this={form ? 'form' : 'section'} onsubmit={onsubmit}>
         <button onclick={closeEffect}></button>
         <div class:open>
             <button onclick={closeEffect}><CloseIcon /></button>

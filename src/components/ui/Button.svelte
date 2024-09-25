@@ -10,6 +10,7 @@
         text?: Boolean;
         loading?: Boolean;
         test?: string;
+        submit?: Boolean;
     };
 
     const {
@@ -19,11 +20,12 @@
         onclick,
         loading = false,
         test,
+        submit = false,
     }: Props = $props();
 </script>
 
 <!-- <button class:secondary {onclick}>{@render children()}</button> -->
-<button class:secondary class:text {onclick}>
+<button type={submit ? 'submit' : 'button'} class:secondary class:text {onclick}>
     <p class="template">{@render children()}</p>
     {#if loading}
         <span in:fly={{duration: 300, y:10, delay: 300}} out:fly={{duration: 300, y:-10}}>
