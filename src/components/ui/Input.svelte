@@ -60,6 +60,7 @@
                 flex: 1;
                 color: $white;
                 outline: none;
+                border-radius: 0.3rem;
                 background: none;
             }
         }

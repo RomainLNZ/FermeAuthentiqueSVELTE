@@ -5,20 +5,23 @@ type BodyFetch = {
 }
 
 const myfetch = async (method: string, route: string, body?: BodyFetch | null) => {
+
+
+
     //attente reponse de l'api ( pour verification de la reception des info en php)
-    const reponse = await fetch(`${url}${route}.php`, {
+    const response = await fetch(`${url}${route}.php`, {
         method: method,
+        credentials: "include",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },
-
         body: body ? (new URLSearchParams(body)).toString() : null
     });
 
-    const json = await reponse.json();
+    const json = await response.json();
 
     return {
-        server: reponse,
+        server: response,
         back: json,
     }
 }

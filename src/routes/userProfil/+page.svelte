@@ -1,51 +1,86 @@
 <script lang="ts">
     import headBg from "$img/background.svg";
-    import apple from "$img/pomme.png";
     import userProfil from "$img/UserProfil.png";
     import wave from "$img/wave.svg";
     import logo from "$img/logoBig.svg";
-    import search from "$img/search.svg";
     import StarIcon from "~icons/heroicons/star-solid";
+    import Settings from "~icons/heroicons/cog-6-tooth-20-solid";
+    import Edit from "~icons/heroicons/pencil-solid";
+    import Logout from "~icons/heroicons/arrow-left-end-on-rectangle-16-solid";
     import MarketIcon from "~icons/heroicons/building-storefront-20-solid";
 
-    import Nav from "$components/layouts/Nav.svelte";
+    import user, { type DataAuth } from "$stores/user";
+    import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+    import Modal from "$components/ui/Modal.svelte";
+
+    let auth: false | DataAuth = $state(false);
+    onMount(() => {
+        const unsubscribe = user.auth.subscribe((value) => {
+            if (value === false) {
+                goto("/");
+            } else {
+                auth = value as DataAuth;
+            }
+        });
+        return () => unsubscribe();
+    });
+
+    let editModal = $state(false);
 </script>
 
-<header>
-    <div class="content">
-        <h1>Firstname <br /><span>Lastname</span></h1>
-        <p>firstname@gmail.com</p>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <div class="action">
-            <button>
-                <MarketIcon />
-                <p>Market</p>
+{#if auth}
+    <header>
+        <div class="edit">
+            <button onclick={() => (editModal = !editModal)}>
+                <Settings />
             </button>
-            <button class="secondary">
-                <StarIcon />
-                <p>Favoris</p>
-            </button>
+            <button><Logout /></button>
         </div>
-    </div>
+        <div class="content">
+            <h1>{auth.firstname} <br /><span>{auth.lastname}</span></h1>
+            {console.log()}
+            <p>{auth.email}</p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <div class="action">
+                <button>
+                    <MarketIcon />
+                    <p>Market</p>
+                </button>
+                <button class="secondary">
+                    <StarIcon />
+                    <p>Favoris</p>
+                </button>
+            </div>
+        </div>
 
-    <div class="graphic">
-        <div>
-            <img class="bgimg" src={headBg} alt="apple background" />
-            <img class="img" src={userProfil} alt="user profil" />
+        <div class="graphic">
+            <div>
+                <img class="bgimg" src={headBg} alt="apple background" />
+                <img class="img" src={userProfil} alt="user profil" />
+            </div>
         </div>
-    </div>
-    <img class="flower" src={logo} alt="flower" />
-    <img class="background" src={wave} alt="wave" />
-</header>
-<Nav></Nav>
+        <img class="flower" src={logo} alt="flower" />
+        <img class="background" src={wave} alt="wave" />
+    </header>
+    <Modal
+        display={editModal}
+        title="Edition"
+        onClose={() => (editModal = !editModal)}
+    >
+        {#snippet content()}
+
+        {/snippet}
+    </Modal>
+{/if}
 
 <style lang="scss">
     header {
@@ -53,6 +88,22 @@
         height: 100vh;
         position: relative;
         display: flex;
+
+        .edit {
+            position: absolute;
+            right: 0;
+            z-index: 4;
+            display: flex;
+            justify-content: end;
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+            margin-left: 5px;
+            background: none;
+            border: none;
+        }
 
         .background {
             width: 100%;
@@ -64,7 +115,7 @@
         .flower {
             height: 25vh;
             position: absolute;
-            bottom: 0;
+            bottom: 1%;
             left: 0;
             z-index: -1;
             transform: translateX(-20%);
@@ -88,7 +139,6 @@
                 transform: translateX(-20%) rotate(0deg);
             }
         }
-
 
         .graphic {
             width: 60%;

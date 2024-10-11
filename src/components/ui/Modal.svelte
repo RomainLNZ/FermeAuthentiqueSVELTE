@@ -37,9 +37,9 @@
 
 {#if display}
     <svelte:element this={form ? 'form' : 'section'} onsubmit={onsubmit}>
-        <button onclick={closeEffect}></button>
+        <button onclick={closeEffect} type="button"></button>
         <div class:open>
-            <button onclick={closeEffect}><CloseIcon /></button>
+            <button onclick={closeEffect} type="button"><CloseIcon /></button>
             {#if title}
                 {#key title}            
                     <h2 in:fly={{duration: 500, y: -20, delay: 500 }} out:fly={{duration: 500, y: -20 }}>{title}</h2>
@@ -132,7 +132,7 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 2rem;
+                gap: .5rem;
                 // overflow-x: hidden;
                 // overflow-y: scroll;
                 overflow-x: hidden;

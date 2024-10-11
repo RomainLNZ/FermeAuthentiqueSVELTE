@@ -28,6 +28,7 @@ const config = {
 			$lib: 'src/lib',
 			$components: 'src/components',
 			$img: 'src/lib/img',
+			$stores: 'src/stores',
 		}
 	}
 };

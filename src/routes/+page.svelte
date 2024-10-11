@@ -3,9 +3,9 @@
     import apple from "$img/pomme.png";
     import wave from "$img/wave.svg";
     import logo from "$img/logoBig.svg";
-    import search from "$img/search.svg";
 
     import Nav from "$components/layouts/Nav.svelte";
+    import Map from "$components/layouts/Map.svelte";
 </script>
 
 <header>
@@ -21,8 +21,8 @@
     </div>
     <img class="flower" src={logo} alt="flower" />
     <img class="background" src={wave} alt="wave" />
+    <Map></Map>
 </header>
-<Nav></Nav>
 
 <style lang="scss">
     header {
@@ -31,6 +31,7 @@
         height: 100dvh;
         position: relative;
         display: flex;
+        // overflow: hidden;
         /* background: red; */
 
         .background {
@@ -43,7 +44,7 @@
         .flower {
             height: 65vh;
             position: absolute;
-            bottom: 0;
+            bottom: 2%;
             left: 0;
             transform: translateX(-20%);
             animation: wind 4s infinite ease-in-out;
